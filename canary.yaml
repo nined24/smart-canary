@@ -1,0 +1,29 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: smart-store-canary
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: smart-store
+      version: canary
+  template:
+    metadata:
+      labels:
+        app: smart-store
+        version: canary
+    spec:
+      containers:
+        - name: smart-store
+          image: smart-canary:2.0.0
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 80
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 80
+            initialDelaySeconds: 5
+            periodSeconds: 5
