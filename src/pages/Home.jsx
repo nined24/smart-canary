@@ -3,7 +3,7 @@ import { APP_VERSION, DEPLOYMENT_STATUS } from '../config';
 export default function Home() {
   return (
     <div className="page">
-      <h1>Smart Store</h1>
+      <h1>Smart Store — Version 2.0.0 (Canary)</h1>
       <p>
         Welcome to Smart Store. Browse our products and add items to your cart.
       </p>
