@@ -1,0 +1,48 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: smart-store-v1
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: smart-store
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: smart-store
+        version: v1
+    spec:
+      containers:
+        - name: smart-store
+          image: smart-canary:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 80
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 80
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 80
+            initialDelaySeconds: 10
+            periodSeconds: 15
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: smart-store-service
+spec:
+  selector:
+    app: smart-store
+    version: v1
+  ports:
+    - port: 80
+      targetPort: 80
+  type: NodePort
